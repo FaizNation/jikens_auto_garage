@@ -3,28 +3,36 @@ class ServiceModel {
   final String name;
   final String description;
   final double price;
+  final int durationMinutes;
+  final bool isActive;
 
   ServiceModel({
     required this.id,
     required this.name,
     required this.description,
     required this.price,
+    required this.durationMinutes,
+    this.isActive = true,
   });
 
-  factory ServiceModel.fromMap(Map<String, dynamic> map, String id) {
+  factory ServiceModel.fromJson(Map<String, dynamic> json, String id) {
     return ServiceModel(
       id: id,
-      name: map['name'] ?? '',
-      description: map['description'] ?? '',
-      price: (map['price'] ?? 0.0).toDouble(),
+      name: json['name'] ?? '',
+      description: json['description'] ?? '',
+      price: (json['price'] ?? 0).toDouble(),
+      durationMinutes: json['durationMinutes'] ?? 0,
+      isActive: json['isActive'] ?? true,
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'name': name,
       'description': description,
       'price': price,
+      'durationMinutes': durationMinutes,
+      'isActive': isActive,
     };
   }
 }
