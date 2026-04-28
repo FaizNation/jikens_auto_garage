@@ -42,7 +42,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
       if (_selectedService == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Please select a service type'),
+            content: const Text('Silakan pilih jenis layanan'),
             backgroundColor: Theme.of(context).colorScheme.error,
             behavior: SnackBarBehavior.floating,
           ),
@@ -76,7 +76,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('✓ Booking created! You are now in queue.'),
+          content: const Text('✓ Pesanan dibuat! Anda sekarang dalam antrean.'),
           backgroundColor: const Color(0xFF10B981),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -89,7 +89,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Failed to book: ${e.toString()}'),
+          content: Text('Gagal memesan: ${e.toString()}'),
           backgroundColor: Theme.of(context).colorScheme.error,
           behavior: SnackBarBehavior.floating,
         ),
@@ -109,7 +109,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
       appBar: AppBar(
         backgroundColor: colors.surface,
         elevation: 0,
-        title: Text('Book a Service', style: text.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        title: Text('Pesan Layanan', style: text.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
         centerTitle: false,
       ),
       body: SafeArea(
@@ -121,42 +121,42 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Schedule your next garage visit quickly and easily.',
+                  'Jadwalkan kunjungan bengkel Anda berikutnya dengan cepat dan mudah.',
                   style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
                 ),
 
                 const SizedBox(height: 32),
 
                 // ── SECTION: Customer & Vehicle Details ──
-                _SectionHeader(icon: Icons.person_outline_rounded, label: 'Customer & Vehicle Details', colors: colors, text: text),
+                _SectionHeader(icon: Icons.person_outline_rounded, label: 'Detail Pelanggan & Kendaraan', colors: colors, text: text),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _licensePlateController,
                   textCapitalization: TextCapitalization.characters,
                   decoration: const InputDecoration(
-                    labelText: 'License Plate (e.g. B 1234 XYZ)',
+                    labelText: 'Plat Nomor (contoh: B 1234 XYZ)',
                     prefixIcon: Icon(Icons.pin_rounded),
                     hintText: 'B 1234 XYZ',
                   ),
                   validator: (value) =>
-                      value == null || value.isEmpty ? 'License plate is required' : null,
+                      value == null || value.isEmpty ? 'Plat nomor wajib diisi' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _vehicleModelController,
                   decoration: const InputDecoration(
-                    labelText: 'Vehicle Brand & Model',
+                    labelText: 'Merk & Model Kendaraan',
                     prefixIcon: Icon(Icons.directions_car_rounded),
                     hintText: 'e.g. Honda Civic 2022',
                   ),
                   validator: (value) =>
-                      value == null || value.isEmpty ? 'Vehicle model is required' : null,
+                      value == null || value.isEmpty ? 'Model kendaraan wajib diisi' : null,
                 ),
 
                 const SizedBox(height: 32),
 
                 // ── SECTION: Service Type ──
-                _SectionHeader(icon: Icons.build_outlined, label: 'Service Type', colors: colors, text: text),
+                _SectionHeader(icon: Icons.build_outlined, label: 'Jenis Layanan', colors: colors, text: text),
                 const SizedBox(height: 16),
 
                 // Service chips grid
@@ -215,7 +215,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
                             child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                           )
                         : const Text(
-                            'Confirm Booking',
+                            'Konfirmasi Pesanan',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                   ),
@@ -228,7 +228,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        'Your booking will be added to the FCFS queue immediately.',
+                        'Pesanan Anda akan langsung ditambahkan ke antrean FCFS.',
                         style: text.bodySmall?.copyWith(color: colors.onSurfaceVariant),
                       ),
                     ),

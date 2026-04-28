@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Login failed: ${e.toString()}'),
+          content: Text('Login gagal: ${e.toString()}'),
           backgroundColor: Theme.of(context).colorScheme.error,
           behavior: SnackBarBehavior.floating,
         ),
@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 24),
                   Text(
-                    'Welcome Back',
+                    'Selamat Datang Kembali',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Sign in to continue to Jikens Auto Garage',
+                    'Masuk untuk melanjutkan ke Jikens Auto Garage',
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -84,18 +84,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       prefixIcon: Icon(Icons.email_outlined),
                     ),
                     validator: (value) => 
-                        value == null || value.isEmpty ? 'Enter your email' : null,
+                        value == null || value.isEmpty ? 'Masukkan email Anda' : null,
                   ),
                   const SizedBox(height: 16),
                   TextFormField(
                     controller: _passwordController,
                     obscureText: true,
                     decoration: const InputDecoration(
-                      labelText: 'Password',
+                      labelText: 'Kata Sandi',
                       prefixIcon: Icon(Icons.lock_outline),
                     ),
                     validator: (value) => 
-                        value == null || value.isEmpty ? 'Enter your password' : null,
+                        value == null || value.isEmpty ? 'Masukkan kata sandi Anda' : null,
                   ),
                   const SizedBox(height: 32),
                   SizedBox(
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             )
                           : const Text(
-                              'Login',
+                              'Masuk',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have an account?",
+                        "Belum punya akun?",
                         style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
                       ),
                       TextButton(
@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             MaterialPageRoute(builder: (context) => const RegisterScreen()),
                           );
                         },
-                        child: const Text('Register'),
+                        child: const Text('Daftar'),
                       ),
                     ],
                   ),

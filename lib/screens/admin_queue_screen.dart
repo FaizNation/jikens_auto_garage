@@ -18,13 +18,13 @@ class _AdminQueueScreenState extends State<AdminQueueScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin Queue'),
+        title: const Text('Antrean Admin'),
         centerTitle: true,
         elevation: 0,
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            tooltip: 'Logout',
+            tooltip: 'Keluar',
             onPressed: () async {
               await _authRepository.logout();
             },
@@ -41,7 +41,7 @@ class _AdminQueueScreenState extends State<AdminQueueScreen> {
           if (snapshot.hasError) {
             return Center(
               child: Text(
-                'Error loading queue: ${snapshot.error}',
+                'Gagal memuat antrean: ${snapshot.error}',
                 style: const TextStyle(color: Colors.red),
               ),
             );
@@ -50,7 +50,7 @@ class _AdminQueueScreenState extends State<AdminQueueScreen> {
           final bookings = snapshot.data;
           
           if (bookings == null || bookings.isEmpty) {
-            return const Center(child: Text('No active bookings in queue.'));
+            return const Center(child: Text('Tidak ada pesanan aktif dalam antrean.'));
           }
 
           return ListView.builder(
@@ -73,14 +73,14 @@ class _AdminQueueScreenState extends State<AdminQueueScreen> {
                     ),
                   ),
                   title: Text(
-                    booking.vehicleData['license_plate'] ?? 'Unknown Vehicle',
+                    booking.vehicleData['license_plate'] ?? 'Kendaraan Tidak Dikenal',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 4),
-                      Text('Service: ${booking.serviceId}'),
+                      Text('Layanan: ${booking.serviceId}'),
                       Text('Status: ${booking.status.name.toUpperCase()}'),
                     ],
                   ),

@@ -68,7 +68,7 @@ class AuthRepository {
         final data = doc.data()!;
         return {
           'role': data['role'] ?? 'customer',
-          'displayName': data['fullName'] ?? data['email'] ?? 'User',
+          'displayName': data['fullName'] ?? data['email'] ?? 'Pengguna',
         };
       }
     } catch (e) {
@@ -76,6 +76,6 @@ class AuthRepository {
         return {'role': 'admin', 'displayName': 'Admin'};
       }
     }
-    return {'role': 'customer', 'displayName': 'User'};
+    return {'role': 'customer', 'displayName': 'Pengguna'};
   }
 }

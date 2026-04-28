@@ -32,15 +32,15 @@ class _UserQueueScreenState extends State<UserQueueScreen> {
   String _statusLabel(BookingStatus status) {
     switch (status) {
       case BookingStatus.pending:
-        return 'PENDING';
+        return 'MENUNGGU';
       case BookingStatus.confirmed:
-        return 'CONFIRMED';
+        return 'TERKONFIRMASI';
       case BookingStatus.onProgress:
-        return 'ON PROGRESS';
+        return 'DALAM PROSES';
       case BookingStatus.done:
-        return 'DONE';
+        return 'SELESAI';
       case BookingStatus.cancelled:
-        return 'CANCELLED';
+        return 'DIBATALKAN';
     }
   }
 
@@ -69,7 +69,7 @@ class _UserQueueScreenState extends State<UserQueueScreen> {
       appBar: AppBar(
         backgroundColor: colors.surface,
         elevation: 0,
-        title: Text('My Queue', style: text.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        title: Text('Antrean Saya', style: text.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
         centerTitle: false,
       ),
       body: StreamBuilder<List<BookingModel>>(
@@ -86,7 +86,7 @@ class _UserQueueScreenState extends State<UserQueueScreen> {
                 children: [
                   Icon(Icons.error_outline_rounded, size: 48, color: colors.error),
                   const SizedBox(height: 12),
-                  Text('Error loading queue', style: text.bodyLarge?.copyWith(color: colors.error)),
+                  Text('Gagal memuat antrean', style: text.bodyLarge?.copyWith(color: colors.error)),
                 ],
               ),
             );
@@ -114,10 +114,10 @@ class _UserQueueScreenState extends State<UserQueueScreen> {
                       child: Icon(Icons.history_toggle_off_rounded, size: 56, color: colors.outline),
                     ),
                     const SizedBox(height: 24),
-                    Text('No Active Booking', style: text.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+                    Text('Tidak Ada Pesanan Aktif', style: text.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                     const SizedBox(height: 8),
                     Text(
-                      'You have no active queue. Go to the Book tab to schedule a service.',
+                      'Anda tidak memiliki antrean aktif. Pergi ke tab Pesan untuk menjadwalkan layanan.',
                       textAlign: TextAlign.center,
                       style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
                     ),
@@ -135,7 +135,7 @@ class _UserQueueScreenState extends State<UserQueueScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Current Booking', style: text.bodySmall?.copyWith(color: colors.onSurfaceVariant, letterSpacing: 0.5)),
+                Text('Pesanan Saat Ini', style: text.bodySmall?.copyWith(color: colors.onSurfaceVariant, letterSpacing: 0.5)),
                 const SizedBox(height: 12),
 
                 // ── Status Hero Card ──
@@ -182,7 +182,7 @@ class _UserQueueScreenState extends State<UserQueueScreen> {
                       // Vehicle & service info
                       _DetailRow(
                         icon: Icons.pin_rounded,
-                        label: 'License Plate',
+                        label: 'Plat Nomor',
                         value: activeBooking.vehicleData['license_plate'] ?? '-',
                         colors: colors,
                         text: text,
@@ -190,7 +190,7 @@ class _UserQueueScreenState extends State<UserQueueScreen> {
                       const SizedBox(height: 12),
                       _DetailRow(
                         icon: Icons.directions_car_rounded,
-                        label: 'Vehicle',
+                        label: 'Kendaraan',
                         value: activeBooking.vehicleData['model'] ?? '-',
                         colors: colors,
                         text: text,
@@ -198,7 +198,7 @@ class _UserQueueScreenState extends State<UserQueueScreen> {
                       const SizedBox(height: 12),
                       _DetailRow(
                         icon: Icons.build_rounded,
-                        label: 'Service',
+                        label: 'Layanan',
                         value: activeBooking.serviceId,
                         colors: colors,
                         text: text,
@@ -210,7 +210,7 @@ class _UserQueueScreenState extends State<UserQueueScreen> {
                 const SizedBox(height: 24),
 
                 // ── Status Progress Steps ──
-                Text('Progress', style: text.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                Text('Kemajuan', style: text.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                 const SizedBox(height: 16),
                 _StatusStepper(currentStatus: activeBooking.status, colors: colors, text: text),
               ],
@@ -260,7 +260,7 @@ class _StatusStepper extends StatelessWidget {
     BookingStatus.done,
   ];
 
-  static const _labels = ['Pending', 'Confirmed', 'On Progress', 'Done'];
+  static const _labels = ['Menunggu', 'Terkonfirmasi', 'Dalam Proses', 'Selesai'];
   static const _icons = [
     Icons.access_time_rounded,
     Icons.check_circle_outline_rounded,
@@ -330,7 +330,7 @@ class _StatusStepper extends StatelessWidget {
                     color: colors.secondaryContainer.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Text('Current', style: text.labelSmall?.copyWith(color: colors.secondaryContainer, fontWeight: FontWeight.bold)),
+                  child: Text('Saat Ini', style: text.labelSmall?.copyWith(color: colors.secondaryContainer, fontWeight: FontWeight.bold)),
                 ),
               ],
               if (isDone) ...[

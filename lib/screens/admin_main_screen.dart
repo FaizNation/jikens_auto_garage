@@ -34,12 +34,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
           NavigationDestination(
             icon: Icon(Icons.list_alt_outlined, color: colors.onSurfaceVariant),
             selectedIcon: Icon(Icons.list_alt_rounded, color: colors.primary),
-            label: 'Queue',
+            label: 'Antrean',
           ),
           NavigationDestination(
             icon: Icon(Icons.build_outlined, color: colors.onSurfaceVariant),
             selectedIcon: Icon(Icons.build_rounded, color: colors.primary),
-            label: 'Services',
+            label: 'Layanan',
           ),
         ],
       ),
@@ -78,15 +78,15 @@ class _AdminQueueTabState extends State<_AdminQueueTab> {
   String _statusLabel(BookingStatus status) {
     switch (status) {
       case BookingStatus.pending:
-        return 'PENDING';
+        return 'MENUNGGU';
       case BookingStatus.confirmed:
-        return 'CONFIRMED';
+        return 'TERKONFIRMASI';
       case BookingStatus.onProgress:
-        return 'ON PROGRESS';
+        return 'DALAM PROSES';
       case BookingStatus.done:
-        return 'DONE';
+        return 'SELESAI';
       case BookingStatus.cancelled:
-        return 'CANCELLED';
+        return 'DIBATALKAN';
     }
   }
 
@@ -104,13 +104,13 @@ class _AdminQueueTabState extends State<_AdminQueueTab> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Jikens Auto Garage', style: text.labelSmall?.copyWith(color: colors.onPrimary.withValues(alpha: 0.7))),
-            Text('Queue Monitor', style: text.titleMedium?.copyWith(color: colors.onPrimary, fontWeight: FontWeight.bold)),
+            Text('Monitor Antrean', style: text.titleMedium?.copyWith(color: colors.onPrimary, fontWeight: FontWeight.bold)),
           ],
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.logout_rounded, color: colors.onPrimary),
-            tooltip: 'Logout',
+            tooltip: 'Keluar',
             onPressed: () async => await _authRepository.logout(),
           ),
         ],
@@ -129,7 +129,7 @@ class _AdminQueueTabState extends State<_AdminQueueTab> {
                 children: [
                   Icon(Icons.error_outline_rounded, size: 48, color: colors.error),
                   const SizedBox(height: 12),
-                  Text('Error loading queue', style: text.bodyLarge?.copyWith(color: colors.error)),
+                  Text('Gagal memuat antrean', style: text.bodyLarge?.copyWith(color: colors.error)),
                 ],
               ),
             );
@@ -144,9 +144,9 @@ class _AdminQueueTabState extends State<_AdminQueueTab> {
                 children: [
                   Icon(Icons.check_circle_outline_rounded, size: 64, color: colors.outline),
                   const SizedBox(height: 16),
-                  Text('Queue is Empty', style: text.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+                  Text('Antrean Kosong', style: text.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
                   const SizedBox(height: 4),
-                  Text('No active bookings at the moment.', style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant)),
+                  Text('Tidak ada pesanan aktif saat ini.', style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant)),
                 ],
               ),
             );
@@ -250,7 +250,7 @@ class _AdminQueueTabState extends State<_AdminQueueTab> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Update Status:', style: text.labelMedium?.copyWith(color: colors.onSurfaceVariant)),
+                          Text('Perbarui Status:', style: text.labelMedium?.copyWith(color: colors.onSurfaceVariant)),
                           PopupMenuButton<BookingStatus>(
                             onSelected: (newStatus) => _repository.updateBookingStatus(booking.id, newStatus),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -263,7 +263,7 @@ class _AdminQueueTabState extends State<_AdminQueueTab> {
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Text('Change', style: text.labelMedium?.copyWith(color: colors.onPrimary, fontWeight: FontWeight.bold)),
+                                  Text('Ubah', style: text.labelMedium?.copyWith(color: colors.onPrimary, fontWeight: FontWeight.bold)),
                                   const SizedBox(width: 4),
                                   Icon(Icons.arrow_drop_down_rounded, color: colors.onPrimary, size: 18),
                                 ],
@@ -358,13 +358,13 @@ class _ServiceManagementTab extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text('Jikens Auto Garage', style: text.labelSmall?.copyWith(color: colors.onPrimary.withValues(alpha: 0.7))),
-            Text('Service Management', style: text.titleMedium?.copyWith(color: colors.onPrimary, fontWeight: FontWeight.bold)),
+            Text('Manajemen Layanan', style: text.titleMedium?.copyWith(color: colors.onPrimary, fontWeight: FontWeight.bold)),
           ],
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.logout_rounded, color: colors.onPrimary),
-            tooltip: 'Logout',
+            tooltip: 'Keluar',
             onPressed: () async => await auth.logout(),
           ),
         ],
@@ -409,7 +409,7 @@ class _ServiceManagementTab extends StatelessWidget {
                   onPressed: () {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('Service management coming soon!'),
+                        content: Text('Manajemen layanan segera hadir!'),
                         behavior: SnackBarBehavior.floating,
                         backgroundColor: colors.primary,
                       ),
@@ -425,7 +425,7 @@ class _ServiceManagementTab extends StatelessWidget {
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: const Text('Add service feature coming soon!'),
+              content: const Text('Fitur tambah layanan segera hadir!'),
               behavior: SnackBarBehavior.floating,
               backgroundColor: colors.primary,
             ),
@@ -434,7 +434,7 @@ class _ServiceManagementTab extends StatelessWidget {
         backgroundColor: colors.primary,
         foregroundColor: colors.onPrimary,
         icon: const Icon(Icons.add_rounded),
-        label: const Text('Add Service', style: TextStyle(fontWeight: FontWeight.bold)),
+        label: const Text('Tambah Layanan', style: TextStyle(fontWeight: FontWeight.bold)),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
     );

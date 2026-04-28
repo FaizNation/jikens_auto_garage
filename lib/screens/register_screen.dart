@@ -32,7 +32,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Registration failed: ${e.toString()}'),
+          content: Text('Pendaftaran gagal: ${e.toString()}'),
           backgroundColor: Theme.of(context).colorScheme.error,
           behavior: SnackBarBehavior.floating,
         ),
@@ -46,7 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Account'),
+        title: const Text('Buat Akun'),
         centerTitle: true,
         elevation: 0,
       ),
@@ -59,7 +59,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Join us!',
+                  'Gabung dengan kami!',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
@@ -68,7 +68,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'Register to book your garage service',
+                  'Daftar untuk memesan layanan bengkel',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -78,11 +78,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(
-                    labelText: 'Full Name',
+                    labelText: 'Nama Lengkap',
                     prefixIcon: Icon(Icons.person_outline),
                   ),
                   validator: (value) => 
-                      value == null || value.isEmpty ? 'Enter your name' : null,
+                      value == null || value.isEmpty ? 'Masukkan nama Anda' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -93,19 +93,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     prefixIcon: Icon(Icons.email_outlined),
                   ),
                   validator: (value) => 
-                      value == null || value.isEmpty ? 'Enter your email' : null,
+                      value == null || value.isEmpty ? 'Masukkan email Anda' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(
-                    labelText: 'Password',
+                    labelText: 'Kata Sandi',
                     prefixIcon: Icon(Icons.lock_outline),
                   ),
                   validator: (value) {
-                    if (value == null || value.isEmpty) return 'Enter your password';
-                    if (value.length < 6) return 'Password must be at least 6 characters';
+                    if (value == null || value.isEmpty) return 'Masukkan kata sandi Anda';
+                    if (value.length < 6) return 'Kata sandi harus minimal 6 karakter';
                     return null;
                   },
                 ),
@@ -124,7 +124,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           )
                         : const Text(
-                            'Register',
+                            'Daftar',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

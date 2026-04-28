@@ -27,14 +27,14 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                'Welcome to Jikens!',
+                'Selamat Datang di Jikens!',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               const Text(
-                'Select your role to continue',
+                'Pilih peran Anda untuk melanjutkan',
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey),
               ),
@@ -49,7 +49,7 @@ class HomeScreen extends StatelessWidget {
                   );
                 },
                 icon: const Icon(Icons.admin_panel_settings),
-                label: const Text('Login as Admin', style: TextStyle(fontSize: 18)),
+                label: const Text('Masuk sebagai Admin', style: TextStyle(fontSize: 18)),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
@@ -70,7 +70,7 @@ class HomeScreen extends StatelessWidget {
                   );
                 },
                 icon: const Icon(Icons.person),
-                label: const Text('Login as Customer', style: TextStyle(fontSize: 18)),
+                label: const Text('Masuk sebagai Pelanggan', style: TextStyle(fontSize: 18)),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   backgroundColor: Theme.of(context).colorScheme.secondaryContainer,

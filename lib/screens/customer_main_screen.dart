@@ -52,22 +52,22 @@ class _CustomerMainScreenState extends State<CustomerMainScreen> {
           NavigationDestination(
             icon: Icon(Icons.home_outlined, color: colors.onSurfaceVariant),
             selectedIcon: Icon(Icons.home_rounded, color: colors.primary),
-            label: 'Home',
+            label: 'Beranda',
           ),
           NavigationDestination(
             icon: Icon(Icons.add_box_outlined, color: colors.onSurfaceVariant),
             selectedIcon: Icon(Icons.add_box_rounded, color: colors.primary),
-            label: 'Book',
+            label: 'Pesan',
           ),
           NavigationDestination(
             icon: Icon(Icons.slow_motion_video_outlined, color: colors.onSurfaceVariant),
             selectedIcon: Icon(Icons.slow_motion_video_rounded, color: colors.primary),
-            label: 'My Queue',
+            label: 'Antrean Saya',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline_rounded, color: colors.onSurfaceVariant),
             selectedIcon: Icon(Icons.person_rounded, color: colors.primary),
-            label: 'Profile',
+            label: 'Profil',
           ),
         ],
       ),
@@ -119,7 +119,7 @@ class _HomeTab extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Good day,', style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant)),
+                      Text('Halo,', style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant)),
                       Text(firstName, style: text.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
                     ],
                   ),
@@ -160,12 +160,12 @@ class _HomeTab extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Ready for your next service?',
+                            'Siap untuk layanan berikutnya?',
                             style: text.titleMedium?.copyWith(color: colors.onPrimary, fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            'Book now and get in queue instantly.',
+                            'Pesan sekarang dan masuk antrean secara instan.',
                             style: text.bodySmall?.copyWith(color: colors.onPrimary.withValues(alpha: 0.75)),
                           ),
                           const SizedBox(height: 16),
@@ -180,7 +180,7 @@ class _HomeTab extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(horizontal: 20),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                               ),
-                              child: Text('Book Now', style: text.labelLarge?.copyWith(fontWeight: FontWeight.bold, color: colors.onSecondaryContainer)),
+                              child: Text('Pesan Sekarang', style: text.labelLarge?.copyWith(fontWeight: FontWeight.bold, color: colors.onSecondaryContainer)),
                             ),
                           ),
                         ],
@@ -195,20 +195,20 @@ class _HomeTab extends StatelessWidget {
               const SizedBox(height: 32),
 
               // ── QUICK ACTIONS ──
-              Text('Quick Actions', style: text.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+              Text('Tindakan Cepat', style: text.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
               Row(
                 children: [
                   _QuickActionCard(
                     icon: Icons.add_box_rounded,
-                    label: 'Book Service',
+                    label: 'Pesan Layanan',
                     color: colors.primary,
                     onTap: onGoToBooking,
                   ),
                   const SizedBox(width: 12),
                   _QuickActionCard(
                     icon: Icons.slow_motion_video_rounded,
-                    label: 'My Queue',
+                    label: 'Antrean Saya',
                     color: colors.secondaryContainer,
                     onTap: onGoToQueue,
                   ),
@@ -218,7 +218,7 @@ class _HomeTab extends StatelessWidget {
               const SizedBox(height: 32),
 
               // ── SERVICES AVAILABLE ──
-              Text('Available Services', style: text.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
+              Text('Layanan Tersedia', style: text.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
               const SizedBox(height: 16),
               _ServiceList(),
             ],
@@ -341,7 +341,7 @@ class _ProfileTab extends StatelessWidget {
     return Scaffold(
       backgroundColor: colors.surface,
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: const Text('Profil'),
         centerTitle: true,
         backgroundColor: colors.surface,
         elevation: 0,
@@ -377,11 +377,11 @@ class _ProfileTab extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    _ProfileInfoRow(icon: Icons.person_outline_rounded, label: 'Full Name', value: displayName, colors: colors, text: text),
+                    _ProfileInfoRow(icon: Icons.person_outline_rounded, label: 'Nama Lengkap', value: displayName, colors: colors, text: text),
                     Divider(height: 24, color: colors.outlineVariant),
                     _ProfileInfoRow(icon: Icons.email_outlined, label: 'Email', value: user?.email ?? '-', colors: colors, text: text),
                     Divider(height: 24, color: colors.outlineVariant),
-                    _ProfileInfoRow(icon: Icons.badge_outlined, label: 'Role', value: 'Customer', colors: colors, text: text),
+                    _ProfileInfoRow(icon: Icons.badge_outlined, label: 'Peran', value: 'Pelanggan', colors: colors, text: text),
                   ],
                 ),
               ),
@@ -397,7 +397,7 @@ class _ProfileTab extends StatelessWidget {
                     await AuthRepository().logout();
                   },
                   icon: const Icon(Icons.logout_rounded),
-                  label: const Text('Sign Out', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  label: const Text('Keluar', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: colors.error,
                     side: BorderSide(color: colors.error, width: 1.5),
