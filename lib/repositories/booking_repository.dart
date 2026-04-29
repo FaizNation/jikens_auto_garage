@@ -61,4 +61,26 @@ class BookingRepository {
       'status': newStatus.name,
     });
   }
+
+  /// History view: Streams bookings with status 'done', newest first.
+  /// Sorting is done locally to avoid requiring a Firestore Composite Index.
+  Stream<List<BookingModel>> streamCompletedBookings() {
+    return _firestore
+        .collection('bookings')
+        .where('status', isEqualTo: 'done')
+        .snapshots()
+        .map((snapshot) {
+      final bookings = snapshot.docs
+          .map((doc) => BookingModel.fromJson(doc.data(), doc.id))
+          .toList();
+      // Sort newest first locally
+      bookings.sort((a, b) {
+        if (a.createdAt == null && b.createdAt == null) return 0;
+        if (a.createdAt == null) return 1;
+        if (b.createdAt == null) return -1;
+        return b.createdAt!.compareTo(a.createdAt!);
+      });
+      return bookings;
+    });
+  }
 }

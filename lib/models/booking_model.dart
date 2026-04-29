@@ -2,13 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum BookingStatus { pending, confirmed, onProgress, done, cancelled }
 
+enum VehicleType { car, motorcycle }
+
 class BookingModel {
   final String id;
   final String userId;
   final String serviceId;
   final Map<String, String> vehicleData;
   final BookingStatus status;
-  final DateTime? createdAt; // Can be null locally before the server timestamp is fetched
+  final VehicleType vehicleType;
+  final String notes;
+  final DateTime? createdAt;
 
   BookingModel({
     required this.id,
@@ -16,6 +20,8 @@ class BookingModel {
     required this.serviceId,
     required this.vehicleData,
     this.status = BookingStatus.pending,
+    this.vehicleType = VehicleType.car,
+    this.notes = '',
     this.createdAt,
   });
 
@@ -26,8 +32,10 @@ class BookingModel {
       serviceId: json['service_id'] ?? '',
       vehicleData: Map<String, String>.from(json['vehicle_data'] ?? {}),
       status: _statusFromString(json['status']),
-      createdAt: json['created_at'] != null 
-          ? (json['created_at'] as Timestamp).toDate() 
+      vehicleType: _vehicleTypeFromString(json['vehicle_type']),
+      notes: json['notes'] ?? '',
+      createdAt: json['created_at'] != null
+          ? (json['created_at'] as Timestamp).toDate()
           : null,
     );
   }
@@ -38,6 +46,8 @@ class BookingModel {
       'service_id': serviceId,
       'vehicle_data': vehicleData,
       'status': status.name,
+      'vehicle_type': vehicleType.name,
+      'notes': notes,
     };
   }
 
@@ -54,6 +64,16 @@ class BookingModel {
       case 'pending':
       default:
         return BookingStatus.pending;
+    }
+  }
+
+  static VehicleType _vehicleTypeFromString(String? type) {
+    switch (type) {
+      case 'motorcycle':
+        return VehicleType.motorcycle;
+      case 'car':
+      default:
+        return VehicleType.car;
     }
   }
 }

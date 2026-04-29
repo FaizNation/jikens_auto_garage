@@ -4,7 +4,6 @@ import '../repositories/booking_repository.dart';
 
 class CreateBookingScreen extends StatefulWidget {
   final String currentUserId;
-  /// Optional: callback when booking succeeds (for tab navigation)
   final VoidCallback? onBookingSuccess;
 
   const CreateBookingScreen({super.key, required this.currentUserId, this.onBookingSuccess});
@@ -17,10 +16,12 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
   final _formKey = GlobalKey<FormState>();
   final _licensePlateController = TextEditingController();
   final _vehicleModelController = TextEditingController();
+  final _notesController = TextEditingController();
   final BookingRepository _bookingRepository = BookingRepository();
 
   bool _isLoading = false;
   String? _selectedService;
+  VehicleType _selectedVehicleType = VehicleType.car;
 
   final List<Map<String, dynamic>> _availableServices = const [
     {'name': 'Ganti Oli', 'icon': Icons.oil_barrel_rounded},
@@ -34,6 +35,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
   void dispose() {
     _licensePlateController.dispose();
     _vehicleModelController.dispose();
+    _notesController.dispose();
     super.dispose();
   }
 
@@ -42,7 +44,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
       if (_selectedService == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: const Text('Silakan pilih jenis layanan'),
+            content: const Text('Please select a service type'),
             backgroundColor: Theme.of(context).colorScheme.error,
             behavior: SnackBarBehavior.floating,
           ),
@@ -58,6 +60,8 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
         id: '',
         userId: widget.currentUserId,
         serviceId: _selectedService!,
+        vehicleType: _selectedVehicleType,
+        notes: _notesController.text.trim(),
         vehicleData: {
           'license_plate': _licensePlateController.text.toUpperCase().trim(),
           'model': _vehicleModelController.text.trim(),
@@ -68,28 +72,30 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
 
       if (!mounted) return;
 
-      // Reset the form
       _formKey.currentState!.reset();
       _licensePlateController.clear();
       _vehicleModelController.clear();
-      setState(() => _selectedService = null);
+      _notesController.clear();
+      setState(() {
+        _selectedService = null;
+        _selectedVehicleType = VehicleType.car;
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('✓ Pesanan dibuat! Anda sekarang dalam antrean.'),
+          content: const Text('✓ Booking created! You are now in queue.'),
           backgroundColor: const Color(0xFF10B981),
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
       );
 
-      // If embedded as tab, call the success callback (e.g., switch to My Queue)
       widget.onBookingSuccess?.call();
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Gagal memesan: ${e.toString()}'),
+          content: Text('Failed to book: ${e.toString()}'),
           backgroundColor: Theme.of(context).colorScheme.error,
           behavior: SnackBarBehavior.floating,
         ),
@@ -109,7 +115,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
       appBar: AppBar(
         backgroundColor: colors.surface,
         elevation: 0,
-        title: Text('Pesan Layanan', style: text.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
+        title: Text('Book a Service', style: text.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
         centerTitle: false,
       ),
       body: SafeArea(
@@ -121,45 +127,62 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Jadwalkan kunjungan bengkel Anda berikutnya dengan cepat dan mudah.',
+                  'Schedule your next garage visit quickly and easily.',
                   style: text.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
                 ),
 
                 const SizedBox(height: 32),
 
                 // ── SECTION: Customer & Vehicle Details ──
-                _SectionHeader(icon: Icons.person_outline_rounded, label: 'Detail Pelanggan & Kendaraan', colors: colors, text: text),
+                _SectionHeader(icon: Icons.person_outline_rounded, label: 'Customer & Vehicle Details', colors: colors, text: text),
                 const SizedBox(height: 16),
+
+                // Vehicle Type toggle
+                _VehicleTypeSelector(
+                  selected: _selectedVehicleType,
+                  onChanged: (type) => setState(() => _selectedVehicleType = type),
+                  colors: colors,
+                  text: text,
+                ),
+                const SizedBox(height: 16),
+
                 TextFormField(
                   controller: _licensePlateController,
                   textCapitalization: TextCapitalization.characters,
                   decoration: const InputDecoration(
-                    labelText: 'Plat Nomor (contoh: B 1234 XYZ)',
+                    labelText: 'License Plate (e.g. B 1234 XYZ)',
                     prefixIcon: Icon(Icons.pin_rounded),
                     hintText: 'B 1234 XYZ',
                   ),
                   validator: (value) =>
-                      value == null || value.isEmpty ? 'Plat nomor wajib diisi' : null,
+                      value == null || value.isEmpty ? 'License plate is required' : null,
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _vehicleModelController,
-                  decoration: const InputDecoration(
-                    labelText: 'Merk & Model Kendaraan',
-                    prefixIcon: Icon(Icons.directions_car_rounded),
-                    hintText: 'e.g. Honda Civic 2022',
+                  decoration: InputDecoration(
+                    labelText: _selectedVehicleType == VehicleType.car
+                        ? 'Car Brand & Model'
+                        : 'Motorcycle Brand & Model',
+                    prefixIcon: Icon(
+                      _selectedVehicleType == VehicleType.car
+                          ? Icons.directions_car_rounded
+                          : Icons.two_wheeler_rounded,
+                    ),
+                    hintText: _selectedVehicleType == VehicleType.car
+                        ? 'e.g. Honda Civic 2022'
+                        : 'e.g. Honda Beat 2023',
                   ),
                   validator: (value) =>
-                      value == null || value.isEmpty ? 'Model kendaraan wajib diisi' : null,
+                      value == null || value.isEmpty ? 'Vehicle model is required' : null,
                 ),
 
                 const SizedBox(height: 32),
 
                 // ── SECTION: Service Type ──
-                _SectionHeader(icon: Icons.build_outlined, label: 'Jenis Layanan', colors: colors, text: text),
+                _SectionHeader(icon: Icons.build_outlined, label: 'Service Type', colors: colors, text: text),
                 const SizedBox(height: 16),
 
-                // Service chips grid
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
@@ -201,9 +224,29 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
                   }).toList(),
                 ),
 
+                const SizedBox(height: 32),
+
+                // ── SECTION: Notes ──
+                _SectionHeader(icon: Icons.notes_rounded, label: 'Notes (Optional)', colors: colors, text: text),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _notesController,
+                  maxLines: 4,
+                  minLines: 3,
+                  decoration: const InputDecoration(
+                    labelText: 'Additional Notes',
+                    hintText: 'e.g. Engine makes a clicking sound when starting, AC not cold...',
+                    alignLabelWithHint: true,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(bottom: 56),
+                      child: Icon(Icons.edit_note_rounded),
+                    ),
+                  ),
+                ),
+
                 const SizedBox(height: 40),
 
-                // ── SUBMIT BUTTON ──
+                // ── SUBMIT ──
                 SizedBox(
                   height: 56,
                   child: FilledButton(
@@ -215,7 +258,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
                             child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
                           )
                         : const Text(
-                            'Konfirmasi Pesanan',
+                            'Confirm Booking',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                   ),
@@ -228,7 +271,7 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        'Pesanan Anda akan langsung ditambahkan ke antrean FCFS.',
+                        'Your booking will be added to the FCFS queue immediately.',
                         style: text.bodySmall?.copyWith(color: colors.onSurfaceVariant),
                       ),
                     ),
@@ -243,6 +286,117 @@ class _CreateBookingScreenState extends State<CreateBookingScreen> {
     );
   }
 }
+
+// ── VEHICLE TYPE SELECTOR ─────────────────────────────────────────────────────
+
+class _VehicleTypeSelector extends StatelessWidget {
+  final VehicleType selected;
+  final ValueChanged<VehicleType> onChanged;
+  final ColorScheme colors;
+  final TextTheme text;
+
+  const _VehicleTypeSelector({
+    required this.selected,
+    required this.onChanged,
+    required this.colors,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Vehicle Type',
+          style: text.labelMedium?.copyWith(color: colors.onSurfaceVariant),
+        ),
+        const SizedBox(height: 8),
+        Row(
+          children: [
+            Expanded(
+              child: _TypeOption(
+                icon: Icons.directions_car_rounded,
+                label: 'Car',
+                isSelected: selected == VehicleType.car,
+                onTap: () => onChanged(VehicleType.car),
+                colors: colors,
+                text: text,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _TypeOption(
+                icon: Icons.two_wheeler_rounded,
+                label: 'Motorcycle',
+                isSelected: selected == VehicleType.motorcycle,
+                onTap: () => onChanged(VehicleType.motorcycle),
+                colors: colors,
+                text: text,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _TypeOption extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final ColorScheme colors;
+  final TextTheme text;
+
+  const _TypeOption({
+    required this.icon,
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+    required this.colors,
+    required this.text,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        decoration: BoxDecoration(
+          color: isSelected ? colors.primary : colors.surfaceContainerLowest,
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(
+            color: isSelected ? colors.primary : colors.outlineVariant,
+            width: isSelected ? 1.5 : 1,
+          ),
+        ),
+        child: Column(
+          children: [
+            Icon(
+              icon,
+              size: 28,
+              color: isSelected ? colors.onPrimary : colors.onSurfaceVariant,
+            ),
+            const SizedBox(height: 6),
+            Text(
+              label,
+              style: text.labelMedium?.copyWith(
+                color: isSelected ? colors.onPrimary : colors.onSurface,
+                fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── SECTION HEADER ─────────────────────────────────────────────────────────────
 
 class _SectionHeader extends StatelessWidget {
   final IconData icon;
