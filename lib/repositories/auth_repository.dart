@@ -78,4 +78,28 @@ class AuthRepository {
     }
     return {'role': 'customer', 'displayName': 'Pengguna'};
   }
+
+  /// Get display name for a single user UID
+  Future<String> getUserName(String uid) async {
+    try {
+      final doc = await _firestore.collection('users').doc(uid).get();
+      if (doc.exists && doc.data() != null) {
+        final data = doc.data()!;
+        return (data['fullName'] as String?)?.trim().isNotEmpty == true
+            ? data['fullName'] as String
+            : data['email'] ?? 'Unknown';
+      }
+    } catch (_) {}
+    return 'Unknown';
+  }
+
+  /// Batch-fetch display names for a list of UIDs (returns uid -> name map)
+  Future<Map<String, String>> getUserNames(List<String> uids) async {
+    final result = <String, String>{};
+    final unique = uids.toSet().toList();
+    await Future.wait(unique.map((uid) async {
+      result[uid] = await getUserName(uid);
+    }));
+    return result;
+  }
 }
